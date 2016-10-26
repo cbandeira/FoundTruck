@@ -5,50 +5,55 @@ define('CONST_INATIVO', 0);
 
 class Usuario {
 
-    private $nmCPF;
+    private $nrCPF;
     private $teNome;
     private $teEmail;
     private $teSenha;
     private $csAtivo;
 
-    public function getNmCPF() {
-        return $this->nmCPF;
+    public function getCpf() {
+        return $this->nrCPF;
     }
 
-    public function setNmCPF($nmCPF) {
-        $this->nmCPF = $nmCPF;
+    public function setCpf($nrCPF) {
+        $this->nrCPF = $nrCPF;
     }
 
-    public function getTeNome() {
+    public function getNome() {
         return $this->teNome;
     }
 
-    public function setTeNome($teNome) {
+    public function setNome($teNome) {
         $this->teNome = $teNome;
     }
 
-    public function getTeEmail() {
+    public function getEmail() {
         return $this->teEmail;
     }
 
-    public function setTeEmail($teEmail) {
+    public function setEmail($teEmail) {
         $this->teEmail = strtolower($teEmail);
     }
 
-    public function getTeSenha() {
+    public function getSenha() {
         return $this->teSenha;
     }
 
-    public function setTeSenha($teSenha) {
+    public function setSenha($teSenha) {
         $this->teSenha = strtolower($teSenha);
-    }    
-    
-    public function getCsAtivo() {
+    }
+
+    public function getAtivo() {
         return $this->csAtivo;
     }
 
-    public function setCsAtivo($csAtivo) {
-        $this->csAtivo = strtolower($csAtivo);
+    public function setAtivo($csAtivo) {
+        if($csAtivo){
+            $this->csAtivo = CONST_ATIVO;
+        }else{
+
+        }
+
     }
 
 }

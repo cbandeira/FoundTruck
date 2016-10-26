@@ -21,19 +21,12 @@ class DaoUsuario{
 
     public function Inserir(Usuario $obUsuario) {
         try {
-            $stSql = "INSERT INTO TB_USUARIO (		
-                TE_NOME,
-                TE_EMAIL,
-                TE_SENHA,
-                CS_ATIVO, 
-                VALUES (
-                :TE_NOME,
-                :TE_EMAIL,
-                :TE_SENHA,
-                :CS_ATIVO";
+            $stSql = "INSERT INTO TB_USUARIO (NR_CPF,TE_NOME,TE_EMAIL,TE_SENHA,CS_ATIVO)
+                VALUES (:NR_CPF,:TE_NOME,:TE_EMAIL,:TE_SENHA,:CS_ATIVO)";
 
             $obSql = Conexao::getInstance()->prepare($stSql);
 
+            $obSql->bindValue(":NR_CPF", $obUsuario->getCpf());
             $obSql->bindValue(":TE_NOME", $obUsuario->getNome());
             $obSql->bindValue(":TE_EMAIL", $obUsuario->getEmail());
             $obSql->bindValue(":TE_SENHA", $obUsuario->getSenha());
@@ -41,9 +34,12 @@ class DaoUsuario{
 
 
             return $obSql->execute();
+
+            print("Inserido com sucesso no banco!");
         } catch (Exception $e) {
-            print "Ocorreu um erro ao tentar executar esta ação, foi gerado um LOG do mesmo, tente novamente mais tarde.";
-            GeraLog::getInstance()->inserirLog("Erro: Código: " . $e->getCode() . " Mensagem: " . $e->getMessage());
+            echo gethostbyname("host.name.tld");
+            print "Ocorreu um erro ao tentar executar esta ação, foi gerado um LOG do mesmo, tente novamente mais tarde<br />.";
+            print("Erro: Código: " . $e->getCode() . " Mensagem: " . $e->getMessage());
         }
     }
 
@@ -55,7 +51,7 @@ class DaoUsuario{
                 TE_SENHA = :TE_SENHA,
                 CS_ATIVO = :CS_ATIVO
 
-                WHERE NM_CPF = :NM_CPF";
+                WHERE NR_CPF = :NR_CPF";
 
             $obSql = Conexao::getInstance()->prepare($stSql);
 
@@ -63,7 +59,7 @@ class DaoUsuario{
             $obSql->bindValue(":TE_EMAIL", $obUsuario->getEmail());
             $obSql->bindValue(":TE_SENHA", $obUsuario->getSenha());
             $obSql->bindValue(":CS_ATIVO", $obUsuario->getAtivo());
-            $obSql->bindValue(":NM_CPF", $obUsuario->getCPF());
+            $obSql->bindValue(":NR_CPF", $obUsuario->getCPF());
 
             return $obSql->execute();
         } catch (Exception $e) {
@@ -72,11 +68,11 @@ class DaoUsuario{
         }
     }
 
-    public function Deletar($nmCPF) {
+    public function Deletar($nrCPF) {
         try {
-            $stSql = "DELETE FROM TB_USUARIO WHERE NM_CPF = :cpf";
+            $stSql = "DELETE FROM TB_USUARIO WHERE NR_CPF = :cpf";
             $obSql = Conexao::getInstance()->prepare($stSql);
-            $obSql->bindValue(":cpf", $nmCPF);
+            $obSql->bindValue(":cpf", $nrCPF);
 
             return $obSql->execute();
         } catch (Exception $e) {
@@ -85,11 +81,11 @@ class DaoUsuario{
         }
     }
 
-    public function BuscarPorCPF($nmCPF) {
+    public function BuscarPorCPF($nrCPF) {
         try {
-            $stSql = "SELECT * FROM TB_USUARIO WHERE NM_CPF = :cpf";
+            $stSql = "SELECT * FROM TB_USUARIO WHERE NR_CPF = :cpf";
             $obSql = Conexao::getInstance()->prepare($stSql);
-            $obSql->bindValue(":cpf", $nmCPF);
+            $obSql->bindValue(":cpf", $nrCPF);
             $obSql->execute();
             return $this->populaUsuario($obSql->fetch(PDO::FETCH_ASSOC));
         } catch (Exception $e) {
@@ -100,11 +96,13 @@ class DaoUsuario{
 
 	private function populaUsuario($arRow) {
         $obPojo = new Usuario;
-        $obPojo->setCPF($arRow['NM_CPF']);
+        $obPojo->setCPF($arRow['NR_CPF']);
         $obPojo->setNome($arRow['TE_NOME']);
         $obPojo->setEmail($arRow['TE_EMAIL']);
         $obPojo->setSenha($arRow['TE_SENHA']);
         $obPojo->setAtivo($arRow['CS_ATIVO']);
+
+        echo "Populado com sucesso1";
 
         return $obPojo;
     }

@@ -2,14 +2,14 @@
 
 class Alimento {
 
-    private $teAlimento;
+    private $teNome;
     private $teImagem;
 
-    function setAlimento($alimento){
-        $this->teAlimento = $alimento;
+    function setNome($alimento){
+        $this->teNome = $alimento;
     }
 
-    public function getAlimento(){
+    public function getNome(){
         return $this->alimento;
     }
 
